@@ -17,9 +17,13 @@
 
   <view class="section">
     <text class="section-title">空状态样式</text>
-    <van-empty description="还没有记录">
-      <van-button type="default" size="small" bind:click="goToLog">去记录</van-button>
-    </van-empty>
+    <view class="empty-state">
+      <text class="empty-title">还没有记录</text>
+      <text class="empty-desc">去 Log 页面添加今天的健身或身体数据。</text>
+      <view class="section">
+        <van-button type="default" size="small" bind:click="goToLog">去记录</van-button>
+      </view>
+    </view>
   </view>
 
   <view class="section">

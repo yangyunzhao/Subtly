@@ -46,6 +46,10 @@ npm config set registry https://registry.npmjs.org/
 
 如果报错类似：`component not found in the path ... @vant/weapp/button/index`，说明当前构建输出的目录是 `miniprogram_npm/vant-weapp/...`。请确保 `usingComponents` 使用 `vant-weapp/xxx/index` 路径（本仓库已统一为该写法），并重新 **构建 npm**。
 
+### 常见问题：找不到 `vant-weapp/empty/index`
+
+如果 `miniprogram_npm/vant-weapp` 目录下没有 `empty` 组件（你提供的目录结构中确实缺失），请移除 `van-empty` 的引用，使用自定义空状态布局替代（本仓库已切换为自定义空状态）。
+
 ## 3) 页面组件引入方式
 
 每个页面在 `index.json` 中声明组件，例如：
@@ -55,8 +59,7 @@ npm config set registry https://registry.npmjs.org/
   "usingComponents": {
     "van-button": "vant-weapp/button/index",
     "van-field": "vant-weapp/field/index",
-    "van-cell-group": "vant-weapp/cell-group/index",
-    "van-empty": "vant-weapp/empty/index"
+    "van-cell-group": "vant-weapp/cell-group/index"
   }
 }
 ```
@@ -73,7 +76,7 @@ npm config set registry https://registry.npmjs.org/
 - `van-button`：按钮
 - `van-field`：输入框
 - `van-cell` / `van-cell-group`：列表项
-- `van-empty`：空状态
+- 空状态：部分版本可能未提供 `empty` 组件，可用自定义空状态容器替代
 - `van-dialog` / `van-popup`：弹层
 - `van-datetime-picker`：日期选择
 
