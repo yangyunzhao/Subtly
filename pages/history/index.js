@@ -46,8 +46,8 @@ Page({
   onShow() {
     this.loadEntries();
   },
-  async loadEntries() {
-    const { fitnessEntries, bodyEntries } = await getHistoryUseCase.execute({
+  loadEntries() {
+    const { fitnessEntries, bodyEntries } = getHistoryUseCase.execute({
       range: this.data.activeFilter
     });
     const fitnessList = fitnessEntries.map((entry) => ({

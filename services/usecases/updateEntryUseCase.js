@@ -1,12 +1,12 @@
 const fitnessRepository = require("../repositories/fitnessRepository");
 const bodyMetricsRepository = require("../repositories/bodyMetricsRepository");
 
-const execute = async ({ kind, id, patch }) => {
+const execute = ({ kind, id, patch }) => {
   if (kind === "body") {
-    await bodyMetricsRepository.update(id, patch);
+    bodyMetricsRepository.update(id, patch);
     return;
   }
-  await fitnessRepository.update(id, patch);
+  fitnessRepository.update(id, patch);
 };
 
 module.exports = {

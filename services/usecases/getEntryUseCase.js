@@ -1,7 +1,7 @@
 const fitnessRepository = require("../repositories/fitnessRepository");
 const bodyMetricsRepository = require("../repositories/bodyMetricsRepository");
 
-const execute = async ({ kind, id }) => {
+const execute = ({ kind, id }) => {
   if (kind === "body") {
     return bodyMetricsRepository.getById(id);
   }

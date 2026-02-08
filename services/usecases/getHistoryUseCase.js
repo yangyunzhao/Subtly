@@ -17,14 +17,14 @@ const getRange = (range) => {
   return { start: null, end: null };
 };
 
-const execute = async ({ range = "7d" } = {}) => {
+const execute = ({ range = "7d" } = {}) => {
   const { start, end } = getRange(range);
   const fitnessEntries = start
-    ? await fitnessRepository.listByDateRange(start, end)
-    : await fitnessRepository.listAll();
+    ? fitnessRepository.listByDateRange(start, end)
+    : fitnessRepository.listAll();
   const bodyEntries = start
-    ? await bodyMetricsRepository.listByDateRange(start, end)
-    : await bodyMetricsRepository.listAll();
+    ? bodyMetricsRepository.listByDateRange(start, end)
+    : bodyMetricsRepository.listAll();
   return {
     fitnessEntries,
     bodyEntries

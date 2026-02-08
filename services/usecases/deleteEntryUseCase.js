@@ -1,12 +1,12 @@
 const fitnessRepository = require("../repositories/fitnessRepository");
 const bodyMetricsRepository = require("../repositories/bodyMetricsRepository");
 
-const execute = async ({ kind, id }) => {
+const execute = ({ kind, id }) => {
   if (kind === "body") {
-    await bodyMetricsRepository.delete(id);
+    bodyMetricsRepository.delete(id);
     return;
   }
-  await fitnessRepository.delete(id);
+  fitnessRepository.delete(id);
 };
 
 module.exports = {

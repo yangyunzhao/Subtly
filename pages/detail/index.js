@@ -48,18 +48,18 @@ Page({
   onShow() {
     this.loadEntries();
   },
-  async loadEntries() {
+  loadEntries() {
     const date = this.data.form.date;
     let fitnessEntry = null;
     let bodyEntry = null;
     if (this.data.fitnessId) {
-      fitnessEntry = await getEntryUseCase.execute({ kind: "fitness", id: this.data.fitnessId });
+      fitnessEntry = getEntryUseCase.execute({ kind: "fitness", id: this.data.fitnessId });
     }
     if (this.data.bodyId) {
-      bodyEntry = await getEntryUseCase.execute({ kind: "body", id: this.data.bodyId });
+      bodyEntry = getEntryUseCase.execute({ kind: "body", id: this.data.bodyId });
     }
     if (!fitnessEntry || !bodyEntry) {
-      const history = await getHistoryUseCase.execute({ range: "all" });
+      const history = getHistoryUseCase.execute({ range: "all" });
       if (!fitnessEntry) {
         fitnessEntry = findByDate(history.fitnessEntries, date);
       }

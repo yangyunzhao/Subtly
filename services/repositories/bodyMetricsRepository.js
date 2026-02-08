@@ -15,34 +15,34 @@ const isInRange = (date, start, end) => {
   return target >= toDate(start).getTime() && target <= toDate(end).getTime();
 };
 
-const create = async (entry) => {
+const create = (entry) => {
   const entries = getEntries(BODY_KEY);
   entries.unshift(entry);
   setEntries(BODY_KEY, entries);
   return entry;
 };
 
-const listByDateRange = async (start, end) => {
+const listByDateRange = (start, end) => {
   const entries = getEntries(BODY_KEY);
   const filtered = entries.filter((entry) => isInRange(entry.date, start, end));
   return sortByDateDesc(filtered);
 };
 
-const listAll = async () => {
+const listAll = () => {
   return sortByDateDesc(getEntries(BODY_KEY));
 };
 
-const getById = async (id) => {
+const getById = (id) => {
   return getEntries(BODY_KEY).find((entry) => entry.id === id) || null;
 };
 
-const update = async (id, patch) => {
+const update = (id, patch) => {
   const entries = getEntries(BODY_KEY);
   const next = entries.map((entry) => (entry.id === id ? { ...entry, ...patch } : entry));
   setEntries(BODY_KEY, next);
 };
 
-const remove = async (id) => {
+const remove = (id) => {
   const entries = getEntries(BODY_KEY).filter((entry) => entry.id !== id);
   setEntries(BODY_KEY, entries);
 };

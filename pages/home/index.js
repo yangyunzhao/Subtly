@@ -17,14 +17,13 @@ Page({
   },
   onShow() {
     const today = getToday();
-    getHistoryUseCase.execute({ range: "all" }).then(({ fitnessEntries, bodyEntries }) => {
-      const fitnessCount = countEntriesForDate(fitnessEntries, today);
-      const bodyCount = countEntriesForDate(bodyEntries, today);
-      this.setData({
-        today,
-        fitnessStatus: fitnessCount ? `已记录 ${fitnessCount} 条` : "未记录",
-        bodyStatus: bodyCount ? `已记录 ${bodyCount} 条` : "未记录"
-      });
+    const { fitnessEntries, bodyEntries } = getHistoryUseCase.execute({ range: "all" });
+    const fitnessCount = countEntriesForDate(fitnessEntries, today);
+    const bodyCount = countEntriesForDate(bodyEntries, today);
+    this.setData({
+      today,
+      fitnessStatus: fitnessCount ? `已记录 ${fitnessCount} 条` : "未记录",
+      bodyStatus: bodyCount ? `已记录 ${bodyCount} 条` : "未记录"
     });
   },
   goToLog() {
