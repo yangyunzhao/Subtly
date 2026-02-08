@@ -42,6 +42,10 @@ npm install
 npm config set registry https://registry.npmjs.org/
 ```
 
+### 常见问题：模拟器提示找不到组件路径
+
+如果报错类似：`component not found in the path ... @vant/weapp/button/index`，说明当前构建输出的目录是 `miniprogram_npm/vant-weapp/...`。请确保 `usingComponents` 使用 `vant-weapp/xxx/index` 路径（本仓库已统一为该写法），并重新 **构建 npm**。
+
 ## 3) 页面组件引入方式
 
 每个页面在 `index.json` 中声明组件，例如：
@@ -49,10 +53,10 @@ npm config set registry https://registry.npmjs.org/
 ```json
 {
   "usingComponents": {
-    "van-button": "@vant/weapp/button/index",
-    "van-field": "@vant/weapp/field/index",
-    "van-cell-group": "@vant/weapp/cell-group/index",
-    "van-empty": "@vant/weapp/empty/index"
+    "van-button": "vant-weapp/button/index",
+    "van-field": "vant-weapp/field/index",
+    "van-cell-group": "vant-weapp/cell-group/index",
+    "van-empty": "vant-weapp/empty/index"
   }
 }
 ```
