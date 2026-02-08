@@ -115,3 +115,4 @@ interface BodyMetricsRepository {
 1. 初始化小程序项目结构。
 2. 确定技术栈（原生小程序 + 后端框架）。
 3. 从 UI 表单开始搭建（记录页面）。
+4. 参考 M1 指导文档：`doc/M1_GUIDE.md`。
