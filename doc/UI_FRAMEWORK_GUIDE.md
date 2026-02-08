@@ -80,6 +80,10 @@ npm config set registry https://registry.npmjs.org/
 - `van-dialog` / `van-popup`：弹层
 - `van-datetime-picker`：日期选择
 
+### 注意事项：tabs 组件加载失败
+
+如果控制台提示 `vant-weapp/tabs` 被代码依赖分析忽略，可先用自定义切换按钮替代（例如两个 `van-button` 切换表单），或在开发者工具中关闭 **过滤无依赖文件** 再重新构建 npm。
+
 ## 6) 后续建议
 
 - 如果你希望更强的视觉风格，可以加主题色与字号变量统一。

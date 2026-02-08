@@ -56,9 +56,11 @@ Page({
   },
   onTabChange(event) {
     const index =
-      event.detail && event.detail.index !== undefined
-        ? event.detail.index
-        : event.detail;
+      event.currentTarget && event.currentTarget.dataset.index !== undefined
+        ? Number(event.currentTarget.dataset.index)
+        : event.detail && event.detail.index !== undefined
+          ? event.detail.index
+          : event.detail;
     this.setData({
       activeTab: index
     });
