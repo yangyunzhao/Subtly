@@ -1,5 +1,77 @@
 <view class="page">
   <text class="title">Log</text>
-  <text class="subtitle">这里将记录每日健身数据</text>
-  <button class="action" bindtap="goHome">返回 Home</button>
+  <text class="subtitle">记录每日健身与身体数据</text>
+
+  <view class="section">
+    <text class="section-title">健身记录</text>
+    <view class="card">
+      <view class="form-item">
+        <text class="form-label">日期 <text class="required">*</text></text>
+        <picker mode="date" value="{{form.date}}" bindchange="onDateChange">
+          <view class="input input--picker">{{form.date || '请选择日期'}}</view>
+        </picker>
+        <text class="form-hint">默认今天，格式 YYYY-MM-DD。</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">项目 <text class="required">*</text></text>
+        <picker mode="selector" range="{{workoutTypes}}" value="{{form.typeIndex}}" bindchange="onTypeChange">
+          <view class="input input--picker">{{workoutTypes[form.typeIndex]}}</view>
+        </picker>
+        <text class="form-hint">必填，默认跑步。</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">时长</text>
+        <view class="input-group">
+          <input class="input" type="number" placeholder="输入分钟" data-field="duration" bindinput="onInputChange" value="{{form.duration}}" />
+          <text class="input-unit">分钟</text>
+        </view>
+        <text class="form-hint">时间类项目建议填写。</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">次数</text>
+        <view class="input-group">
+          <input class="input" type="number" placeholder="输入次数" data-field="count" bindinput="onInputChange" value="{{form.count}}" />
+          <text class="input-unit">次</text>
+        </view>
+        <text class="form-hint">次数类项目建议填写。</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">备注</text>
+        <textarea class="textarea" placeholder="补充说明" data-field="notes" bindinput="onInputChange" value="{{form.notes}}" />
+        <text class="form-hint">可选，默认空。</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <text class="section-title">身体数据</text>
+    <view class="card">
+      <view class="form-item">
+        <text class="form-label">体重</text>
+        <view class="input-group">
+          <input class="input" type="digit" placeholder="输入体重" data-field="weight" bindinput="onInputChange" value="{{form.weight}}" />
+          <text class="input-unit">kg</text>
+        </view>
+        <text class="form-hint">可选，保留 1 位小数。</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">腰围</text>
+        <view class="input-group">
+          <input class="input" type="digit" placeholder="输入腰围" data-field="waistline" bindinput="onInputChange" value="{{form.waistline}}" />
+          <text class="input-unit">cm</text>
+        </view>
+        <text class="form-hint">可选，保留 1 位小数。</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <button class="btn btn--primary" bindtap="onSubmit">保存示例</button>
+    <button class="btn btn--ghost" bindtap="goHome">返回 Home</button>
+  </view>
 </view>

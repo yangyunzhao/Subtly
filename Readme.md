@@ -28,6 +28,8 @@ Lightweight daily logging with clear daily/weekly/monthly insights and extensibl
 ## 文档 / Documentation
 
 - 开发计划 / Development Plan: `doc/DEVELOPMENT_PLAN.md`
+- M1 开发指导 / M1 Guide: `doc/M1_GUIDE.md`
+- M1 数据规范 / M1 Data Spec: `doc/M1_DATA_SPEC.md`
 - 本地开发环境 / Local Dev Setup: `doc/LOCAL_DEV_SETUP.md`
 - M2 开发指导 / M2 Guide: `doc/M2_GUIDE.md`
 

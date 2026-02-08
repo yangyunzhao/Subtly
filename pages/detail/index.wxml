@@ -1,5 +1,44 @@
 <view class="page">
   <text class="title">Detail</text>
-  <text class="subtitle">这里将展示单次记录详情</text>
-  <button class="action" bindtap="goHome">返回 Home</button>
+  <text class="subtitle">单次记录详情展示</text>
+
+  <view class="section">
+    <text class="section-title">记录概览</text>
+    <view class="card">
+      <view class="list">
+        <view class="list-item">
+          <view class="list-item-main">
+            <text class="list-item-title">日期</text>
+            <text class="list-item-subtitle">2024-04-10</text>
+          </view>
+          <text class="list-item-meta">必填</text>
+        </view>
+        <view class="list-item">
+          <view class="list-item-main">
+            <text class="list-item-title">项目</text>
+            <text class="list-item-subtitle">跑步</text>
+          </view>
+          <text class="list-item-meta">默认</text>
+        </view>
+        <view class="list-item">
+          <view class="list-item-main">
+            <text class="list-item-title">时长</text>
+            <text class="list-item-subtitle">30 分钟</text>
+          </view>
+          <text class="list-item-meta">分钟</text>
+        </view>
+        <view class="list-item">
+          <view class="list-item-main">
+            <text class="list-item-title">体重</text>
+            <text class="list-item-subtitle">70.2 kg</text>
+          </view>
+          <text class="list-item-meta">可选</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <button class="btn btn--ghost" bindtap="goHome">返回 Home</button>
+  </view>
 </view>
