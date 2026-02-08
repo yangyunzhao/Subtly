@@ -23,5 +23,6 @@
   },
   "window": {
     "navigationBarTitleText": "Subtly Fitness Tracker"
-  }
+  },
+  "style": "v2"
 }
