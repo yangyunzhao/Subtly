@@ -1,5 +1,94 @@
 <view class="page">
   <text class="title">Log</text>
-  <text class="subtitle">这里将记录每日健身数据</text>
-  <button class="action" bindtap="goHome">返回 Home</button>
+  <text class="subtitle">记录每日健身与身体数据</text>
+
+  <view class="section">
+    <text class="section-title">健身记录</text>
+    <van-cell-group inset>
+      <picker mode="date" value="{{form.date}}" bindchange="onDateChange">
+        <van-field
+          label="日期"
+          required
+          readonly
+          is-link
+          value="{{form.date || '请选择日期'}}"
+        />
+      </picker>
+      <picker mode="selector" range="{{workoutTypes}}" value="{{form.typeIndex}}" bindchange="onTypeChange">
+        <van-field
+          label="项目"
+          required
+          readonly
+          is-link
+          value="{{workoutTypes[form.typeIndex]}}"
+        />
+      </picker>
+      <van-field
+        label="时长"
+        type="number"
+        placeholder="输入分钟"
+        input-align="right"
+        data-field="duration"
+        bind:change="onInputChange"
+        value="{{form.duration}}"
+      >
+        <text slot="right-icon" class="input-unit">分钟</text>
+      </van-field>
+      <van-field
+        label="次数"
+        type="number"
+        placeholder="输入次数"
+        input-align="right"
+        data-field="count"
+        bind:change="onInputChange"
+        value="{{form.count}}"
+      >
+        <text slot="right-icon" class="input-unit">次</text>
+      </van-field>
+      <van-field
+        label="备注"
+        type="textarea"
+        placeholder="补充说明"
+        autosize
+        data-field="notes"
+        bind:change="onInputChange"
+        value="{{form.notes}}"
+      />
+    </van-cell-group>
+  </view>
+
+  <view class="section">
+    <text class="section-title">身体数据</text>
+    <van-cell-group inset>
+      <van-field
+        label="体重"
+        type="digit"
+        placeholder="输入体重"
+        input-align="right"
+        data-field="weight"
+        bind:change="onInputChange"
+        value="{{form.weight}}"
+      >
+        <text slot="right-icon" class="input-unit">kg</text>
+      </van-field>
+      <van-field
+        label="腰围"
+        type="digit"
+        placeholder="输入腰围"
+        input-align="right"
+        data-field="waistline"
+        bind:change="onInputChange"
+        value="{{form.waistline}}"
+      >
+        <text slot="right-icon" class="input-unit">cm</text>
+      </van-field>
+    </van-cell-group>
+  </view>
+
+  <view class="section">
+    <van-button type="primary" block bind:click="onSubmit">保存示例</van-button>
+    <view class="section">
+      <van-button type="default" block bind:click="goHome">返回 Home</van-button>
+    </view>
+  </view>
 </view>
