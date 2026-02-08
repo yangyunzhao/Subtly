@@ -48,44 +48,57 @@ Page({
   onShow() {
     this.loadEntries();
   },
-  loadEntries() {
+  async loadEntries() {
     const date = this.data.form.date;
     let fitnessEntry = null;
     let bodyEntry = null;
-    if (this.data.fitnessId) {
-      fitnessEntry = getEntryUseCase.execute({ kind: "fitness", id: this.data.fitnessId });
-    }
-    if (this.data.bodyId) {
-      bodyEntry = getEntryUseCase.execute({ kind: "body", id: this.data.bodyId });
-    }
-    if (!fitnessEntry || !bodyEntry) {
-      const history = getHistoryUseCase.execute({ range: "all" });
-      if (!fitnessEntry) {
-        fitnessEntry = findByDate(history.fitnessEntries, date);
+    try {
+      if (this.data.fitnessId) {
+        fitnessEntry = await getEntryUseCase.execute({
+          kind: "fitness",
+          id: this.data.fitnessId
+        });
       }
-      if (!bodyEntry) {
-        bodyEntry = findByDate(history.bodyEntries, date);
+      if (this.data.bodyId) {
+        bodyEntry = await getEntryUseCase.execute({
+          kind: "body",
+          id: this.data.bodyId
+        });
       }
-    }
-    const typeIndex = Math.max(
-      0,
-      workoutOptions.findIndex((item) => item.value === (fitnessEntry && fitnessEntry.type))
-    );
+      if (!fitnessEntry || !bodyEntry) {
+        const history = await getHistoryUseCase.execute({ range: "all" });
+        if (!fitnessEntry) {
+          fitnessEntry = findByDate(history.fitnessEntries, date);
+        }
+        if (!bodyEntry) {
+          bodyEntry = findByDate(history.bodyEntries, date);
+        }
+      }
+      const typeIndex = Math.max(
+        0,
+        workoutOptions.findIndex((item) => item.value === (fitnessEntry && fitnessEntry.type))
+      );
 
-    this.setData({
-      fitnessId: fitnessEntry ? fitnessEntry.id : "",
-      bodyId: bodyEntry ? bodyEntry.id : "",
-      form: {
-        date: (fitnessEntry && fitnessEntry.date) || (bodyEntry && bodyEntry.date) || date,
-        typeIndex,
-        duration: fitnessEntry && fitnessEntry.duration ? String(fitnessEntry.duration) : "",
-        count: fitnessEntry && fitnessEntry.count ? String(fitnessEntry.count) : "",
-        calories: fitnessEntry && fitnessEntry.calories ? String(fitnessEntry.calories) : "",
-        notes: fitnessEntry ? fitnessEntry.notes : "",
-        weight: bodyEntry && bodyEntry.weight ? String(bodyEntry.weight) : "",
-        waistline: bodyEntry && bodyEntry.waistline ? String(bodyEntry.waistline) : ""
-      }
-    });
+      this.setData({
+        fitnessId: fitnessEntry ? fitnessEntry.id : "",
+        bodyId: bodyEntry ? bodyEntry.id : "",
+        form: {
+          date: (fitnessEntry && fitnessEntry.date) || (bodyEntry && bodyEntry.date) || date,
+          typeIndex,
+          duration: fitnessEntry && fitnessEntry.duration ? String(fitnessEntry.duration) : "",
+          count: fitnessEntry && fitnessEntry.count ? String(fitnessEntry.count) : "",
+          calories: fitnessEntry && fitnessEntry.calories ? String(fitnessEntry.calories) : "",
+          notes: fitnessEntry ? fitnessEntry.notes : "",
+          weight: bodyEntry && bodyEntry.weight ? String(bodyEntry.weight) : "",
+          waistline: bodyEntry && bodyEntry.waistline ? String(bodyEntry.waistline) : ""
+        }
+      });
+    } catch (error) {
+      wx.showToast({
+        title: error.message || "加载失败，请稍后重试",
+        icon: "none"
+      });
+    }
   },
   onDateChange(event) {
     this.setData(
@@ -110,7 +123,7 @@ Page({
       [`form.${field}`]: value
     });
   },
-  onSaveFitness() {
+  async onSaveFitness() {
     const { form, fitnessId } = this.data;
     if (!form.date) {
       wx.showToast({
@@ -137,19 +150,26 @@ Page({
       calories: form.calories ? Number(form.calories) : 0,
       notes: form.notes || ""
     };
-    if (fitnessId) {
-      updateEntryUseCase.execute({ kind: "fitness", id: fitnessId, patch: fitnessEntry });
-    } else {
-      logFitnessUseCase.execute(fitnessEntry);
-      this.setData({ fitnessId: entryId });
-    }
+    try {
+      if (fitnessId) {
+        await updateEntryUseCase.execute({ kind: "fitness", id: fitnessId, patch: fitnessEntry });
+      } else {
+        await logFitnessUseCase.execute(fitnessEntry);
+        this.setData({ fitnessId: entryId });
+      }
 
-    wx.showToast({
-      title: "健身记录已保存",
-      icon: "success"
-    });
+      wx.showToast({
+        title: "健身记录已保存",
+        icon: "success"
+      });
+    } catch (error) {
+      wx.showToast({
+        title: error.message || "保存失败，请稍后重试",
+        icon: "none"
+      });
+    }
   },
-  onSaveBody() {
+  async onSaveBody() {
     const { form, fitnessId, bodyId } = this.data;
     if (!form.date) {
       wx.showToast({
@@ -173,17 +193,24 @@ Page({
       weight: form.weight ? Number(form.weight) : 0,
       waistline: form.waistline ? Number(form.waistline) : 0
     };
-    if (bodyId) {
-      updateEntryUseCase.execute({ kind: "body", id: bodyId, patch: bodyEntry });
-    } else {
-      logBodyMetricsUseCase.execute(bodyEntry);
-      this.setData({ bodyId: entryId });
-    }
+    try {
+      if (bodyId) {
+        await updateEntryUseCase.execute({ kind: "body", id: bodyId, patch: bodyEntry });
+      } else {
+        await logBodyMetricsUseCase.execute(bodyEntry);
+        this.setData({ bodyId: entryId });
+      }
 
-    wx.showToast({
-      title: "身体数据已保存",
-      icon: "success"
-    });
+      wx.showToast({
+        title: "身体数据已保存",
+        icon: "success"
+      });
+    } catch (error) {
+      wx.showToast({
+        title: error.message || "保存失败，请稍后重试",
+        icon: "none"
+      });
+    }
   },
   onDelete() {
     const { fitnessId, bodyId, kind } = this.data;
@@ -192,17 +219,24 @@ Page({
     wx.showModal({
       title,
       content,
-      success: (res) => {
+      success: async (res) => {
         if (!res.confirm) return;
-        if (kind === "fitness" && fitnessId) {
-          deleteEntryUseCase.execute({ kind: "fitness", id: fitnessId });
+        try {
+          if (kind === "fitness" && fitnessId) {
+            await deleteEntryUseCase.execute({ kind: "fitness", id: fitnessId });
+          }
+          if (kind === "body" && bodyId) {
+            await deleteEntryUseCase.execute({ kind: "body", id: bodyId });
+          }
+          wx.switchTab({
+            url: "/pages/history/index"
+          });
+        } catch (error) {
+          wx.showToast({
+            title: error.message || "删除失败，请稍后重试",
+            icon: "none"
+          });
         }
-        if (kind === "body" && bodyId) {
-          deleteEntryUseCase.execute({ kind: "body", id: bodyId });
-        }
-        wx.switchTab({
-          url: "/pages/history/index"
-        });
       }
     });
   },

@@ -1,9 +1,9 @@
 const { createFitnessEntry } = require("../../domain/models");
-const fitnessRepository = require("../repositories/fitnessRepository");
+const fitnessApi = require("../api/fitnessApi");
 
-const execute = (payload) => {
+const execute = async (payload) => {
   const entry = createFitnessEntry(payload);
-  return fitnessRepository.create(entry);
+  return fitnessApi.create(entry);
 };
 
 module.exports = {

@@ -1,0 +1,16 @@
+CREATE TABLE IF NOT EXISTS fitness_entries (
+  id TEXT PRIMARY KEY,
+  date TEXT NOT NULL,
+  type TEXT NOT NULL,
+  duration INTEGER DEFAULT 0,
+  count INTEGER DEFAULT 0,
+  calories INTEGER DEFAULT 0,
+  notes TEXT DEFAULT ""
+);
+
+CREATE TABLE IF NOT EXISTS body_metrics (
+  id TEXT PRIMARY KEY,
+  date TEXT NOT NULL,
+  weight REAL DEFAULT 0,
+  waistline REAL DEFAULT 0
+);

@@ -1,12 +1,11 @@
-const fitnessRepository = require("../repositories/fitnessRepository");
-const bodyMetricsRepository = require("../repositories/bodyMetricsRepository");
+const fitnessApi = require("../api/fitnessApi");
+const bodyMetricsApi = require("../api/bodyMetricsApi");
 
-const execute = ({ kind, id, patch }) => {
+const execute = async ({ kind, id, patch }) => {
   if (kind === "body") {
-    bodyMetricsRepository.update(id, patch);
-    return;
+    return bodyMetricsApi.update(id, patch);
   }
-  fitnessRepository.update(id, patch);
+  return fitnessApi.update(id, patch);
 };
 
 module.exports = {

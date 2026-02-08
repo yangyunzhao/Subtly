@@ -1,3 +1,5 @@
 App({
-  globalData: {}
+  globalData: {
+    apiBaseUrl: "http://localhost:3000"
+  }
 })

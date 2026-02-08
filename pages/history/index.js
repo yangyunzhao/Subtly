@@ -46,27 +46,34 @@ Page({
   onShow() {
     this.loadEntries();
   },
-  loadEntries() {
-    const { fitnessEntries, bodyEntries } = getHistoryUseCase.execute({
-      range: this.data.activeFilter
-    });
-    const fitnessList = fitnessEntries.map((entry) => ({
-        id: entry.id,
-        date: entry.date,
-        title: buildFitnessSummary(entry),
-        label: entry.date
-      }))
-      .sort((a, b) => (a.date > b.date ? -1 : 1));
+  async loadEntries() {
+    try {
+      const { fitnessEntries, bodyEntries } = await getHistoryUseCase.execute({
+        range: this.data.activeFilter
+      });
+      const fitnessList = fitnessEntries.map((entry) => ({
+          id: entry.id,
+          date: entry.date,
+          title: buildFitnessSummary(entry),
+          label: entry.date
+        }))
+        .sort((a, b) => (a.date > b.date ? -1 : 1));
 
-    const bodyList = bodyEntries.map((entry) => ({
-        id: entry.id,
-        date: entry.date,
-        title: buildBodySummary(entry),
-        label: entry.date
-      }))
-      .sort((a, b) => (a.date > b.date ? -1 : 1));
+      const bodyList = bodyEntries.map((entry) => ({
+          id: entry.id,
+          date: entry.date,
+          title: buildBodySummary(entry),
+          label: entry.date
+        }))
+        .sort((a, b) => (a.date > b.date ? -1 : 1));
 
-    this.setData({ fitnessList, bodyList });
+      this.setData({ fitnessList, bodyList });
+    } catch (error) {
+      wx.showToast({
+        title: error.message || "加载失败，请稍后重试",
+        icon: "none"
+      });
+    }
   },
   onFilterChange(event) {
     const value = event.currentTarget.dataset.value;
