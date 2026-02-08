@@ -1,0 +1,11 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/log/index",
+    "pages/history/index",
+    "pages/detail/index"
+  ],
+  "window": {
+    "navigationBarTitleText": "Subtly Fitness Tracker"
+  }
+}
