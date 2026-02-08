@@ -15,16 +15,23 @@ Page({
     fitnessStatus: "暂无记录",
     bodyStatus: "暂无记录"
   },
-  onShow() {
+  async onShow() {
     const today = getToday();
-    const { fitnessEntries, bodyEntries } = getHistoryUseCase.execute({ range: "all" });
-    const fitnessCount = countEntriesForDate(fitnessEntries, today);
-    const bodyCount = countEntriesForDate(bodyEntries, today);
-    this.setData({
-      today,
-      fitnessStatus: fitnessCount ? `已记录 ${fitnessCount} 条` : "未记录",
-      bodyStatus: bodyCount ? `已记录 ${bodyCount} 条` : "未记录"
-    });
+    try {
+      const { fitnessEntries, bodyEntries } = await getHistoryUseCase.execute({ range: "all" });
+      const fitnessCount = countEntriesForDate(fitnessEntries, today);
+      const bodyCount = countEntriesForDate(bodyEntries, today);
+      this.setData({
+        today,
+        fitnessStatus: fitnessCount ? `已记录 ${fitnessCount} 条` : "未记录",
+        bodyStatus: bodyCount ? `已记录 ${bodyCount} 条` : "未记录"
+      });
+    } catch (error) {
+      wx.showToast({
+        title: error.message || "加载失败，请稍后重试",
+        icon: "none"
+      });
+    }
   },
   goToLog() {
     wx.switchTab({

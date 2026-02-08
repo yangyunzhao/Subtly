@@ -1,9 +1,9 @@
 const { createBodyMetricsEntry } = require("../../domain/models");
-const bodyMetricsRepository = require("../repositories/bodyMetricsRepository");
+const bodyMetricsApi = require("../api/bodyMetricsApi");
 
-const execute = (payload) => {
+const execute = async (payload) => {
   const entry = createBodyMetricsEntry(payload);
-  return bodyMetricsRepository.create(entry);
+  return bodyMetricsApi.create(entry);
 };
 
 module.exports = {

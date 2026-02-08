@@ -62,7 +62,7 @@ Page({
       activeTab: index
     });
   },
-  onSaveFitness() {
+  async onSaveFitness() {
     const { form } = this.data;
     if (!form.date) {
       wx.showToast({
@@ -89,20 +89,26 @@ Page({
       calories: form.calories ? Number(form.calories) : 0,
       notes: form.notes || ""
     };
-    logFitnessUseCase.execute(fitnessEntry);
-
-    wx.showToast({
-      title: "健身记录已保存",
-      icon: "success",
-      duration: 1500
-    });
-    setTimeout(() => {
-      wx.switchTab({
-        url: "/pages/history/index"
+    try {
+      await logFitnessUseCase.execute(fitnessEntry);
+      wx.showToast({
+        title: "健身记录已保存",
+        icon: "success",
+        duration: 1500
       });
-    }, 500);
+      setTimeout(() => {
+        wx.switchTab({
+          url: "/pages/history/index"
+        });
+      }, 500);
+    } catch (error) {
+      wx.showToast({
+        title: error.message || "保存失败，请稍后重试",
+        icon: "none"
+      });
+    }
   },
-  onSaveBody() {
+  async onSaveBody() {
     const { form } = this.data;
     if (!form.date) {
       wx.showToast({
@@ -125,17 +131,24 @@ Page({
       weight: form.weight ? Number(form.weight) : 0,
       waistline: form.waistline ? Number(form.waistline) : 0
     };
-    logBodyMetricsUseCase.execute(bodyEntry);
-    wx.showToast({
-      title: "身体数据已保存",
-      icon: "success",
-      duration: 1500
-    });
-    setTimeout(() => {
-      wx.switchTab({
-        url: "/pages/history/index"
+    try {
+      await logBodyMetricsUseCase.execute(bodyEntry);
+      wx.showToast({
+        title: "身体数据已保存",
+        icon: "success",
+        duration: 1500
       });
-    }, 500);
+      setTimeout(() => {
+        wx.switchTab({
+          url: "/pages/history/index"
+        });
+      }, 500);
+    } catch (error) {
+      wx.showToast({
+        title: error.message || "保存失败，请稍后重试",
+        icon: "none"
+      });
+    }
   },
   goHome() {
     wx.switchTab({
