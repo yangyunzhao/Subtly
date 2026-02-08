@@ -1,5 +1,18 @@
 <view class="page">
   <text class="title">Detail</text>
-  <text class="subtitle">这里将展示单次记录详情</text>
-  <button class="action" bindtap="goHome">返回 Home</button>
+  <text class="subtitle">单次记录详情展示</text>
+
+  <view class="section">
+    <text class="section-title">记录概览</text>
+    <van-cell-group inset>
+      <van-cell title="日期" value="2024-04-10" label="必填" />
+      <van-cell title="项目" value="跑步" label="默认" />
+      <van-cell title="时长" value="30 分钟" label="单位：分钟" />
+      <van-cell title="体重" value="70.2 kg" label="可选" />
+    </van-cell-group>
+  </view>
+
+  <view class="section">
+    <van-button type="default" block bind:click="goHome">返回 Home</van-button>
+  </view>
 </view>
