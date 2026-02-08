@@ -45,8 +45,12 @@ Page({
   },
   onInputChange(event) {
     const field = event.currentTarget.dataset.field;
+    const value =
+      event.detail && event.detail.value !== undefined
+        ? event.detail.value
+        : event.detail;
     this.setData({
-      [`form.${field}`]: event.detail.value
+      [`form.${field}`]: value
     });
   },
   onSaveFitness() {
