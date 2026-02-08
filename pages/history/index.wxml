@@ -1,3 +1,5 @@
 <view class="page">
   <text class="title">History</text>
+  <text class="subtitle">这里将展示历史趋势</text>
+  <button class="action" bindtap="goHome">返回 Home</button>
 </view>

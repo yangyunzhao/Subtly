@@ -1,3 +1,8 @@
 Page({
-  data: {}
+  data: {},
+  goHome() {
+    wx.switchTab({
+      url: "/pages/home/index"
+    })
+  }
 })
