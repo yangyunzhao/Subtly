@@ -28,6 +28,7 @@
       "type": "running",
       "duration": 30,
       "count": 0,
+      "calories": 300,
       "notes": ""
     }
   ],
@@ -35,7 +36,7 @@
     {
       "id": "uuid",
       "date": "2024-01-01",
-      "weight": 70.5,
+      "weight": 120,
       "waistline": 82
     }
   ]
@@ -54,12 +55,13 @@
   - 类型（running / cycling / strength / plank / pushups / custom）
   - 时长（分钟）
   - 次数（可选）
+  - 热量消耗（千卡）
   - 备注（可选）
 - 完成身体数据表单：
-  - 体重（kg）
+  - 体重（斤）
   - 腰围（cm）
-- 点击“保存”后：
-  - 写入本地存储
+- 点击“保存健身记录”或“保存身体数据”后：
+  - 分别写入对应本地存储
   - 成功提示
   - 跳转到 History 页面
 
