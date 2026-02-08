@@ -4,41 +4,15 @@
 
   <view class="section">
     <text class="section-title">记录概览</text>
-    <view class="card">
-      <view class="list">
-        <view class="list-item">
-          <view class="list-item-main">
-            <text class="list-item-title">日期</text>
-            <text class="list-item-subtitle">2024-04-10</text>
-          </view>
-          <text class="list-item-meta">必填</text>
-        </view>
-        <view class="list-item">
-          <view class="list-item-main">
-            <text class="list-item-title">项目</text>
-            <text class="list-item-subtitle">跑步</text>
-          </view>
-          <text class="list-item-meta">默认</text>
-        </view>
-        <view class="list-item">
-          <view class="list-item-main">
-            <text class="list-item-title">时长</text>
-            <text class="list-item-subtitle">30 分钟</text>
-          </view>
-          <text class="list-item-meta">分钟</text>
-        </view>
-        <view class="list-item">
-          <view class="list-item-main">
-            <text class="list-item-title">体重</text>
-            <text class="list-item-subtitle">70.2 kg</text>
-          </view>
-          <text class="list-item-meta">可选</text>
-        </view>
-      </view>
-    </view>
+    <van-cell-group inset>
+      <van-cell title="日期" value="2024-04-10" label="必填" />
+      <van-cell title="项目" value="跑步" label="默认" />
+      <van-cell title="时长" value="30 分钟" label="单位：分钟" />
+      <van-cell title="体重" value="70.2 kg" label="可选" />
+    </van-cell-group>
   </view>
 
   <view class="section">
-    <button class="btn btn--ghost" bindtap="goHome">返回 Home</button>
+    <van-button type="default" block bind:click="goHome">返回 Home</van-button>
   </view>
 </view>

@@ -2,8 +2,8 @@
   <text class="title">Home</text>
   <text class="subtitle">M1 页面骨架导航</text>
   <view class="actions">
-    <button class="btn btn--primary" bindtap="goToLog">进入 Log</button>
-    <button class="btn btn--ghost" bindtap="goToHistory">进入 History</button>
-    <button class="btn btn--ghost" bindtap="goToDetail">进入 Detail</button>
+    <van-button type="primary" block bind:click="goToLog">进入 Log</van-button>
+    <van-button type="default" block bind:click="goToHistory">进入 History</van-button>
+    <van-button type="default" block bind:click="goToDetail">进入 Detail</van-button>
   </view>
 </view>
