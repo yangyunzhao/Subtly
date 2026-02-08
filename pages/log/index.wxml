@@ -29,7 +29,7 @@
         placeholder="输入分钟"
         input-align="right"
         data-field="duration"
-        bind:change="onInputChange"
+        bind:input="onInputChange"
         value="{{form.duration}}"
       >
         <text slot="right-icon" class="input-unit">分钟</text>
@@ -40,10 +40,21 @@
         placeholder="输入次数"
         input-align="right"
         data-field="count"
-        bind:change="onInputChange"
+        bind:input="onInputChange"
         value="{{form.count}}"
       >
         <text slot="right-icon" class="input-unit">次</text>
+      </van-field>
+      <van-field
+        label="热量消耗"
+        type="number"
+        placeholder="输入热量"
+        input-align="right"
+        data-field="calories"
+        bind:input="onInputChange"
+        value="{{form.calories}}"
+      >
+        <text slot="right-icon" class="input-unit">千卡</text>
       </van-field>
       <van-field
         label="备注"
@@ -51,7 +62,7 @@
         placeholder="补充说明"
         autosize
         data-field="notes"
-        bind:change="onInputChange"
+        bind:input="onInputChange"
         value="{{form.notes}}"
       />
     </van-cell-group>
@@ -66,10 +77,10 @@
         placeholder="输入体重"
         input-align="right"
         data-field="weight"
-        bind:change="onInputChange"
+        bind:input="onInputChange"
         value="{{form.weight}}"
       >
-        <text slot="right-icon" class="input-unit">kg</text>
+        <text slot="right-icon" class="input-unit">斤</text>
       </van-field>
       <van-field
         label="腰围"
@@ -77,7 +88,7 @@
         placeholder="输入腰围"
         input-align="right"
         data-field="waistline"
-        bind:change="onInputChange"
+        bind:input="onInputChange"
         value="{{form.waistline}}"
       >
         <text slot="right-icon" class="input-unit">cm</text>
@@ -86,7 +97,10 @@
   </view>
 
   <view class="section">
-    <van-button type="primary" block bind:click="onSubmit">保存示例</van-button>
+    <van-button type="primary" block bind:click="onSaveFitness">保存健身记录</van-button>
+    <view class="section">
+      <van-button type="primary" block bind:click="onSaveBody">保存身体数据</van-button>
+    </view>
     <view class="section">
       <van-button type="default" block bind:click="goHome">返回 Home</van-button>
     </view>

@@ -30,6 +30,7 @@ Page({
       typeIndex: 0,
       duration: "",
       count: "",
+      calories: "",
       notes: "",
       weight: "",
       waistline: ""
@@ -61,6 +62,7 @@ Page({
         typeIndex,
         duration: fitnessEntry && fitnessEntry.duration ? String(fitnessEntry.duration) : "",
         count: fitnessEntry && fitnessEntry.count ? String(fitnessEntry.count) : "",
+        calories: fitnessEntry && fitnessEntry.calories ? String(fitnessEntry.calories) : "",
         notes: fitnessEntry ? fitnessEntry.notes : "",
         weight: bodyEntry && bodyEntry.weight ? String(bodyEntry.weight) : "",
         waistline: bodyEntry && bodyEntry.waistline ? String(bodyEntry.waistline) : ""
@@ -86,7 +88,7 @@ Page({
       [`form.${field}`]: event.detail.value
     });
   },
-  onSave() {
+  onSaveFitness() {
     const { form, fitnessId, bodyId } = this.data;
     if (!form.date) {
       wx.showToast({
@@ -109,24 +111,43 @@ Page({
       type: workoutOptions[form.typeIndex].value,
       duration: form.duration ? Number(form.duration) : 0,
       count: form.count ? Number(form.count) : 0,
+      calories: form.calories ? Number(form.calories) : 0,
       notes: form.notes || ""
     };
     upsertEntry(FITNESS_KEY, fitnessEntry);
 
-    if (form.weight || form.waistline) {
-      const bodyEntry = {
-        id: bodyId || `${fitnessEntry.id}-body`,
-        date: form.date,
-        weight: form.weight ? Number(form.weight) : 0,
-        waistline: form.waistline ? Number(form.waistline) : 0
-      };
-      upsertEntry(BODY_KEY, bodyEntry);
-    } else if (bodyId) {
-      deleteEntry(BODY_KEY, bodyId);
+    wx.showToast({
+      title: "健身记录已保存",
+      icon: "success"
+    });
+  },
+  onSaveBody() {
+    const { form, fitnessId, bodyId } = this.data;
+    if (!form.date) {
+      wx.showToast({
+        title: "请先选择日期",
+        icon: "none"
+      });
+      return;
+    }
+    if (!form.weight && !form.waistline) {
+      wx.showToast({
+        title: "请至少填写体重或腰围",
+        icon: "none"
+      });
+      return;
     }
 
+    const bodyEntry = {
+      id: bodyId || `${fitnessId || Date.now().toString()}-body`,
+      date: form.date,
+      weight: form.weight ? Number(form.weight) : 0,
+      waistline: form.waistline ? Number(form.waistline) : 0
+    };
+    upsertEntry(BODY_KEY, bodyEntry);
+
     wx.showToast({
-      title: "已保存",
+      title: "身体数据已保存",
       icon: "success"
     });
   },

@@ -22,6 +22,7 @@ Page({
       typeIndex: 0,
       duration: "",
       count: "",
+      calories: "",
       notes: "",
       weight: "",
       waistline: ""
@@ -48,7 +49,7 @@ Page({
       [`form.${field}`]: event.detail.value
     });
   },
-  onSubmit() {
+  onSaveFitness() {
     const { form } = this.data;
     if (!form.date) {
       wx.showToast({
@@ -72,22 +73,48 @@ Page({
       type: workoutOptions[form.typeIndex].value,
       duration: form.duration ? Number(form.duration) : 0,
       count: form.count ? Number(form.count) : 0,
+      calories: form.calories ? Number(form.calories) : 0,
       notes: form.notes || ""
     };
     upsertEntry(FITNESS_KEY, fitnessEntry);
 
-    if (form.weight || form.waistline) {
-      const bodyEntry = {
-        id: `${now}-body`,
-        date: form.date,
-        weight: form.weight ? Number(form.weight) : 0,
-        waistline: form.waistline ? Number(form.waistline) : 0
-      };
-      upsertEntry(BODY_KEY, bodyEntry);
-    }
-
     wx.showToast({
-      title: "保存成功",
+      title: "健身记录已保存",
+      icon: "success",
+      duration: 1500
+    });
+    setTimeout(() => {
+      wx.switchTab({
+        url: "/pages/history/index"
+      });
+    }, 500);
+  },
+  onSaveBody() {
+    const { form } = this.data;
+    if (!form.date) {
+      wx.showToast({
+        title: "请先选择日期",
+        icon: "none"
+      });
+      return;
+    }
+    if (!form.weight && !form.waistline) {
+      wx.showToast({
+        title: "请至少填写体重或腰围",
+        icon: "none"
+      });
+      return;
+    }
+    const now = Date.now().toString();
+    const bodyEntry = {
+      id: `${now}-body`,
+      date: form.date,
+      weight: form.weight ? Number(form.weight) : 0,
+      waistline: form.waistline ? Number(form.waistline) : 0
+    };
+    upsertEntry(BODY_KEY, bodyEntry);
+    wx.showToast({
+      title: "身体数据已保存",
       icon: "success",
       duration: 1500
     });

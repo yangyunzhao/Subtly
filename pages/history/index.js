@@ -17,20 +17,21 @@ const typeLabels = {
 const buildSummary = (fitnessEntry) => {
   if (!fitnessEntry) return "暂无健身记录";
   const label = typeLabels[fitnessEntry.type] || "训练";
+  const caloriesText = fitnessEntry.calories ? ` / ${fitnessEntry.calories} 千卡` : "";
   if (fitnessEntry.duration) {
-    return `${label} ${fitnessEntry.duration} 分钟`;
+    return `${label} ${fitnessEntry.duration} 分钟${caloriesText}`;
   }
   if (fitnessEntry.count) {
-    return `${label} ${fitnessEntry.count} 次`;
+    return `${label} ${fitnessEntry.count} 次${caloriesText}`;
   }
-  return label;
+  return caloriesText ? `${label}${caloriesText}` : label;
 };
 
 const buildBodyMeta = (bodyEntry) => {
   if (!bodyEntry) return "暂无身体数据";
   const parts = [];
   if (bodyEntry.weight) {
-    parts.push(`体重 ${bodyEntry.weight}kg`);
+    parts.push(`体重 ${bodyEntry.weight}斤`);
   }
   if (bodyEntry.waistline) {
     parts.push(`腰围 ${bodyEntry.waistline}cm`);
