@@ -1,4 +1,4 @@
-const { FITNESS_KEY, BODY_KEY, getEntries } = require("../../utils/storage");
+const getHistoryUseCase = require("../../services/usecases/getHistoryUseCase");
 const { getToday } = require("../../utils/date");
 
 const hasEntryForDate = (entries, date) => {
@@ -17,14 +17,14 @@ Page({
   },
   onShow() {
     const today = getToday();
-    const fitnessEntries = getEntries(FITNESS_KEY);
-    const bodyEntries = getEntries(BODY_KEY);
-    const fitnessCount = countEntriesForDate(fitnessEntries, today);
-    const bodyCount = countEntriesForDate(bodyEntries, today);
-    this.setData({
-      today,
-      fitnessStatus: fitnessCount ? `已记录 ${fitnessCount} 条` : "未记录",
-      bodyStatus: bodyCount ? `已记录 ${bodyCount} 条` : "未记录"
+    getHistoryUseCase.execute({ range: "all" }).then(({ fitnessEntries, bodyEntries }) => {
+      const fitnessCount = countEntriesForDate(fitnessEntries, today);
+      const bodyCount = countEntriesForDate(bodyEntries, today);
+      this.setData({
+        today,
+        fitnessStatus: fitnessCount ? `已记录 ${fitnessCount} 条` : "未记录",
+        bodyStatus: bodyCount ? `已记录 ${bodyCount} 条` : "未记录"
+      });
     });
   },
   goToLog() {

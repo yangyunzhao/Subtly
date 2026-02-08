@@ -1,8 +1,5 @@
-const {
-  FITNESS_KEY,
-  BODY_KEY,
-  upsertEntry
-} = require("../../utils/storage");
+const logFitnessUseCase = require("../../services/usecases/logFitnessUseCase");
+const logBodyMetricsUseCase = require("../../services/usecases/logBodyMetricsUseCase");
 const { getToday } = require("../../utils/date");
 
 const workoutOptions = [
@@ -92,7 +89,7 @@ Page({
       calories: form.calories ? Number(form.calories) : 0,
       notes: form.notes || ""
     };
-    upsertEntry(FITNESS_KEY, fitnessEntry);
+    logFitnessUseCase.execute(fitnessEntry);
 
     wx.showToast({
       title: "健身记录已保存",
@@ -128,7 +125,7 @@ Page({
       weight: form.weight ? Number(form.weight) : 0,
       waistline: form.waistline ? Number(form.waistline) : 0
     };
-    upsertEntry(BODY_KEY, bodyEntry);
+    logBodyMetricsUseCase.execute(bodyEntry);
     wx.showToast({
       title: "身体数据已保存",
       icon: "success",

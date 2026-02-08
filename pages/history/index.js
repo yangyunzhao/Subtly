@@ -1,9 +1,4 @@
-const {
-  FITNESS_KEY,
-  BODY_KEY,
-  getEntries
-} = require("../../utils/storage");
-const { isWithinDays, isSameMonth } = require("../../utils/date");
+const getHistoryUseCase = require("../../services/usecases/getHistoryUseCase");
 
 const typeLabels = {
   running: "跑步",
@@ -37,12 +32,6 @@ const buildBodySummary = (entry) => {
   return parts.join(" / ") || "暂无身体数据";
 };
 
-const filterByRange = (date, range) => {
-  if (range === "7d") return isWithinDays(date, 7);
-  if (range === "month") return isSameMonth(date);
-  return true;
-};
-
 Page({
   data: {
     filters: [
@@ -57,12 +46,11 @@ Page({
   onShow() {
     this.loadEntries();
   },
-  loadEntries() {
-    const fitnessEntries = getEntries(FITNESS_KEY);
-    const bodyEntries = getEntries(BODY_KEY);
-    const fitnessList = fitnessEntries
-      .filter((entry) => filterByRange(entry.date, this.data.activeFilter))
-      .map((entry) => ({
+  async loadEntries() {
+    const { fitnessEntries, bodyEntries } = await getHistoryUseCase.execute({
+      range: this.data.activeFilter
+    });
+    const fitnessList = fitnessEntries.map((entry) => ({
         id: entry.id,
         date: entry.date,
         title: buildFitnessSummary(entry),
@@ -70,9 +58,7 @@ Page({
       }))
       .sort((a, b) => (a.date > b.date ? -1 : 1));
 
-    const bodyList = bodyEntries
-      .filter((entry) => filterByRange(entry.date, this.data.activeFilter))
-      .map((entry) => ({
+    const bodyList = bodyEntries.map((entry) => ({
         id: entry.id,
         date: entry.date,
         title: buildBodySummary(entry),

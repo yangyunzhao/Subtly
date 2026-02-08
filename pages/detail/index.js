@@ -1,11 +1,9 @@
-const {
-  FITNESS_KEY,
-  BODY_KEY,
-  getEntries,
-  getEntryById,
-  upsertEntry,
-  deleteEntry
-} = require("../../utils/storage");
+const logFitnessUseCase = require("../../services/usecases/logFitnessUseCase");
+const logBodyMetricsUseCase = require("../../services/usecases/logBodyMetricsUseCase");
+const getEntryUseCase = require("../../services/usecases/getEntryUseCase");
+const getHistoryUseCase = require("../../services/usecases/getHistoryUseCase");
+const updateEntryUseCase = require("../../services/usecases/updateEntryUseCase");
+const deleteEntryUseCase = require("../../services/usecases/deleteEntryUseCase");
 const { getToday } = require("../../utils/date");
 
 const workoutOptions = [
@@ -50,14 +48,25 @@ Page({
   onShow() {
     this.loadEntries();
   },
-  loadEntries() {
+  async loadEntries() {
     const date = this.data.form.date;
-    const fitnessEntry = this.data.fitnessId
-      ? getEntryById(FITNESS_KEY, this.data.fitnessId)
-      : findByDate(getEntries(FITNESS_KEY), date);
-    const bodyEntry = this.data.bodyId
-      ? getEntryById(BODY_KEY, this.data.bodyId)
-      : findByDate(getEntries(BODY_KEY), date);
+    let fitnessEntry = null;
+    let bodyEntry = null;
+    if (this.data.fitnessId) {
+      fitnessEntry = await getEntryUseCase.execute({ kind: "fitness", id: this.data.fitnessId });
+    }
+    if (this.data.bodyId) {
+      bodyEntry = await getEntryUseCase.execute({ kind: "body", id: this.data.bodyId });
+    }
+    if (!fitnessEntry || !bodyEntry) {
+      const history = await getHistoryUseCase.execute({ range: "all" });
+      if (!fitnessEntry) {
+        fitnessEntry = findByDate(history.fitnessEntries, date);
+      }
+      if (!bodyEntry) {
+        bodyEntry = findByDate(history.bodyEntries, date);
+      }
+    }
     const typeIndex = Math.max(
       0,
       workoutOptions.findIndex((item) => item.value === (fitnessEntry && fitnessEntry.type))
@@ -118,8 +127,9 @@ Page({
       return;
     }
 
+    const entryId = fitnessId || Date.now().toString();
     const fitnessEntry = {
-      id: fitnessId || Date.now().toString(),
+      id: entryId,
       date: form.date,
       type: workoutOptions[form.typeIndex].value,
       duration: form.duration ? Number(form.duration) : 0,
@@ -127,7 +137,12 @@ Page({
       calories: form.calories ? Number(form.calories) : 0,
       notes: form.notes || ""
     };
-    upsertEntry(FITNESS_KEY, fitnessEntry);
+    if (fitnessId) {
+      updateEntryUseCase.execute({ kind: "fitness", id: fitnessId, patch: fitnessEntry });
+    } else {
+      logFitnessUseCase.execute(fitnessEntry);
+      this.setData({ fitnessId: entryId });
+    }
 
     wx.showToast({
       title: "健身记录已保存",
@@ -151,13 +166,19 @@ Page({
       return;
     }
 
+    const entryId = bodyId || `${fitnessId || Date.now().toString()}-body`;
     const bodyEntry = {
-      id: bodyId || `${fitnessId || Date.now().toString()}-body`,
+      id: entryId,
       date: form.date,
       weight: form.weight ? Number(form.weight) : 0,
       waistline: form.waistline ? Number(form.waistline) : 0
     };
-    upsertEntry(BODY_KEY, bodyEntry);
+    if (bodyId) {
+      updateEntryUseCase.execute({ kind: "body", id: bodyId, patch: bodyEntry });
+    } else {
+      logBodyMetricsUseCase.execute(bodyEntry);
+      this.setData({ bodyId: entryId });
+    }
 
     wx.showToast({
       title: "身体数据已保存",
@@ -173,8 +194,12 @@ Page({
       content,
       success: (res) => {
         if (!res.confirm) return;
-        if (kind === "fitness" && fitnessId) deleteEntry(FITNESS_KEY, fitnessId);
-        if (kind === "body" && bodyId) deleteEntry(BODY_KEY, bodyId);
+        if (kind === "fitness" && fitnessId) {
+          deleteEntryUseCase.execute({ kind: "fitness", id: fitnessId });
+        }
+        if (kind === "body" && bodyId) {
+          deleteEntryUseCase.execute({ kind: "body", id: bodyId });
+        }
         wx.switchTab({
           url: "/pages/history/index"
         });
