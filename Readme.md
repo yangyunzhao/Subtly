@@ -29,6 +29,7 @@ Lightweight daily logging with clear daily/weekly/monthly insights and extensibl
 
 - 开发计划 / Development Plan: `doc/DEVELOPMENT_PLAN.md`
 - 本地开发环境 / Local Dev Setup: `doc/LOCAL_DEV_SETUP.md`
+- M2 开发指导 / M2 Guide: `doc/M2_GUIDE.md`
 
 ## 贡献 / Contributing
 欢迎提交 Issue 与 PR。

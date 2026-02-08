@@ -1,0 +1,9 @@
+<view class="page">
+  <text class="title">Home</text>
+  <text class="subtitle">M1 页面骨架导航</text>
+  <view class="actions">
+    <button class="action" bindtap="goToLog">进入 Log</button>
+    <button class="action" bindtap="goToHistory">进入 History</button>
+    <button class="action" bindtap="goToDetail">进入 Detail</button>
+  </view>
+</view>

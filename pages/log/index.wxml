@@ -1,0 +1,5 @@
+<view class="page">
+  <text class="title">Log</text>
+  <text class="subtitle">这里将记录每日健身数据</text>
+  <button class="action" bindtap="goHome">返回 Home</button>
+</view>

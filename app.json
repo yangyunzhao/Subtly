@@ -1,0 +1,27 @@
+{
+  "pages": [
+    "pages/home/index",
+    "pages/log/index",
+    "pages/history/index",
+    "pages/detail/index"
+  ],
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/home/index",
+        "text": "Home"
+      },
+      {
+        "pagePath": "pages/log/index",
+        "text": "Log"
+      },
+      {
+        "pagePath": "pages/history/index",
+        "text": "History"
+      }
+    ]
+  },
+  "window": {
+    "navigationBarTitleText": "Subtly Fitness Tracker"
+  }
+}
