@@ -23,7 +23,7 @@
     </view>
   </view>
   <view class="actions">
-    <van-button type="primary" block bind:click="goToLog">去记录</van-button>
-    <van-button type="default" block bind:click="goToHistory">查看历史</van-button>
+    <van-button type="primary" block bind:tap="goToLog">去记录</van-button>
+    <van-button type="default" block bind:tap="goToHistory">查看历史</van-button>
   </view>
 </view>

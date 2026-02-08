@@ -70,7 +70,7 @@
           </van-cell-group>
         </view>
         <view class="section">
-          <van-button type="primary" block bind:click="onSaveFitness">保存健身记录</van-button>
+          <van-button type="primary" block bind:tap="onSaveFitness">保存健身记录</van-button>
         </view>
       </van-tab>
       <van-tab title="身体数据">
@@ -110,13 +110,13 @@
           </van-cell-group>
         </view>
         <view class="section">
-          <van-button type="primary" block bind:click="onSaveBody">保存身体数据</van-button>
+          <van-button type="primary" block bind:tap="onSaveBody">保存身体数据</van-button>
         </view>
       </van-tab>
     </van-tabs>
   </view>
 
   <view class="section">
-    <van-button type="default" block bind:click="goHome">返回首页</van-button>
+    <van-button type="default" block bind:tap="goHome">返回首页</van-button>
   </view>
 </view>
