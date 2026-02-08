@@ -23,6 +23,25 @@ npm install
 
 > 之后会生成 `miniprogram_npm/` 目录。
 
+### 常见问题：npm install 提示 “No matching version found”
+
+如果出现类似报错：`No matching version found for vant-weapp@^1.11.6`，通常是版本号超出当前 npm 源的可用范围。此仓库已经改为使用 `vant-weapp: "latest"` 来避免该问题。你可以按以下步骤修复：
+
+1. 更新 `package.json`（已在仓库中修复为 `latest`）。
+2. 删除 lock 文件与缓存后重装：
+
+```bash
+rm package-lock.json
+npm cache clean --force
+npm install
+```
+
+3. 若仍失败，请确认 npm 源可用（例如设置为官方源）：
+
+```bash
+npm config set registry https://registry.npmjs.org/
+```
+
 ## 3) 页面组件引入方式
 
 每个页面在 `index.json` 中声明组件，例如：

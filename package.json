@@ -4,6 +4,6 @@
   "private": true,
   "description": "Subtly Fitness Tracker Mini Program",
   "dependencies": {
-    "vant-weapp": "^1.11.6"
+    "vant-weapp": "latest"
   }
 }
