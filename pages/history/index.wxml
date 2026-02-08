@@ -1,5 +1,32 @@
 <view class="page">
   <text class="title">History</text>
-  <text class="subtitle">这里将展示历史趋势</text>
-  <button class="action" bindtap="goHome">返回 Home</button>
+  <text class="subtitle">历史列表与空状态展示</text>
+
+  <view class="section">
+    <text class="section-title">列表项样式</text>
+    <van-cell-group inset>
+      <van-cell
+        wx:for="{{listPreview}}"
+        wx:key="title"
+        title="{{item.title}}"
+        label="{{item.subtitle}}"
+        value="{{item.meta}}"
+      />
+    </van-cell-group>
+  </view>
+
+  <view class="section">
+    <text class="section-title">空状态样式</text>
+    <view class="empty-state">
+      <text class="empty-title">还没有记录</text>
+      <text class="empty-desc">去 Log 页面添加今天的健身或身体数据。</text>
+      <view class="section">
+        <van-button type="default" size="small" bind:click="goToLog">去记录</van-button>
+      </view>
+    </view>
+  </view>
+
+  <view class="section">
+    <van-button type="default" block bind:click="goHome">返回 Home</van-button>
+  </view>
 </view>
