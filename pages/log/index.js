@@ -1,14 +1,22 @@
-const getToday = () => {
-  const now = new Date();
-  const year = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, "0");
-  const day = String(now.getDate()).padStart(2, "0");
-  return `${year}-${month}-${day}`;
-};
+const {
+  FITNESS_KEY,
+  BODY_KEY,
+  upsertEntry
+} = require("../../utils/storage");
+const { getToday } = require("../../utils/date");
+
+const workoutOptions = [
+  { label: "跑步", value: "running" },
+  { label: "骑车", value: "cycling" },
+  { label: "力量训练", value: "strength" },
+  { label: "平板支撑", value: "plank" },
+  { label: "俯卧撑", value: "pushups" },
+  { label: "其他", value: "custom" }
+];
 
 Page({
   data: {
-    workoutTypes: ["跑步", "骑车", "力量训练", "平板支撑", "俯卧撑", "其他"],
+    workoutTypes: workoutOptions.map((item) => item.label),
     form: {
       date: "",
       typeIndex: 0,
@@ -41,7 +49,7 @@ Page({
     });
   },
   onSubmit() {
-    const { form, workoutTypes } = this.data;
+    const { form } = this.data;
     if (!form.date) {
       wx.showToast({
         title: "请先选择日期",
@@ -49,12 +57,45 @@ Page({
       });
       return;
     }
-    const preview = `日期 ${form.date}，项目 ${workoutTypes[form.typeIndex]}`;
+    if (!form.duration && !form.count) {
+      wx.showToast({
+        title: "请至少填写时长或次数",
+        icon: "none"
+      });
+      return;
+    }
+
+    const now = Date.now().toString();
+    const fitnessEntry = {
+      id: now,
+      date: form.date,
+      type: workoutOptions[form.typeIndex].value,
+      duration: form.duration ? Number(form.duration) : 0,
+      count: form.count ? Number(form.count) : 0,
+      notes: form.notes || ""
+    };
+    upsertEntry(FITNESS_KEY, fitnessEntry);
+
+    if (form.weight || form.waistline) {
+      const bodyEntry = {
+        id: `${now}-body`,
+        date: form.date,
+        weight: form.weight ? Number(form.weight) : 0,
+        waistline: form.waistline ? Number(form.waistline) : 0
+      };
+      upsertEntry(BODY_KEY, bodyEntry);
+    }
+
     wx.showToast({
-      title: preview,
-      icon: "none",
-      duration: 2000
+      title: "保存成功",
+      icon: "success",
+      duration: 1500
     });
+    setTimeout(() => {
+      wx.switchTab({
+        url: "/pages/history/index"
+      });
+    }, 500);
   },
   goHome() {
     wx.switchTab({

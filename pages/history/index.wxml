@@ -3,7 +3,23 @@
   <text class="subtitle">历史列表与空状态展示</text>
 
   <view class="section">
-    <text class="section-title">列表项样式</text>
+    <text class="section-title">筛选</text>
+    <view class="filter-row">
+      <van-button
+        wx:for="{{filters}}"
+        wx:key="value"
+        size="small"
+        type="{{activeFilter === item.value ? 'primary' : 'default'}}"
+        data-value="{{item.value}}"
+        bind:click="onFilterChange"
+      >
+        {{item.label}}
+      </van-button>
+    </view>
+  </view>
+
+  <view class="section" wx:if="{{listPreview.length}}">
+    <text class="section-title">列表项</text>
     <van-cell-group inset>
       <van-cell
         wx:for="{{listPreview}}"
@@ -11,12 +27,15 @@
         title="{{item.title}}"
         label="{{item.subtitle}}"
         value="{{item.meta}}"
+        is-link
+        data-date="{{item.date}}"
+        bind:click="goToDetail"
       />
     </van-cell-group>
   </view>
 
-  <view class="section">
-    <text class="section-title">空状态样式</text>
+  <view class="section" wx:else>
+    <text class="section-title">空状态</text>
     <view class="empty-state">
       <text class="empty-title">还没有记录</text>
       <text class="empty-desc">去 Log 页面添加今天的健身或身体数据。</text>

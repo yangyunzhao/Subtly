@@ -177,3 +177,9 @@ page {
   font-size: 24rpx;
   color: #666;
 }
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12rpx;
+}
