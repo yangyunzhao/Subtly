@@ -1,12 +1,12 @@
 Page({
   data: {},
   goToLog() {
-    wx.navigateTo({
+    wx.switchTab({
       url: "/pages/log/index"
     })
   },
   goToHistory() {
-    wx.navigateTo({
+    wx.switchTab({
       url: "/pages/history/index"
     })
   },
