@@ -14,27 +14,25 @@ const typeLabels = {
   custom: "其他"
 };
 
-const buildSummary = (fitnessEntry) => {
-  if (!fitnessEntry) return "暂无健身记录";
-  const label = typeLabels[fitnessEntry.type] || "训练";
-  const caloriesText = fitnessEntry.calories ? ` / ${fitnessEntry.calories} 千卡` : "";
-  if (fitnessEntry.duration) {
-    return `${label} ${fitnessEntry.duration} 分钟${caloriesText}`;
+const buildFitnessSummary = (entry) => {
+  const label = typeLabels[entry.type] || "训练";
+  const caloriesText = entry.calories ? ` / ${entry.calories} 千卡` : "";
+  if (entry.duration) {
+    return `${label} ${entry.duration} 分钟${caloriesText}`;
   }
-  if (fitnessEntry.count) {
-    return `${label} ${fitnessEntry.count} 次${caloriesText}`;
+  if (entry.count) {
+    return `${label} ${entry.count} 次${caloriesText}`;
   }
   return caloriesText ? `${label}${caloriesText}` : label;
 };
 
-const buildBodyMeta = (bodyEntry) => {
-  if (!bodyEntry) return "暂无身体数据";
+const buildBodySummary = (entry) => {
   const parts = [];
-  if (bodyEntry.weight) {
-    parts.push(`体重 ${bodyEntry.weight}斤`);
+  if (entry.weight) {
+    parts.push(`体重 ${entry.weight}斤`);
   }
-  if (bodyEntry.waistline) {
-    parts.push(`腰围 ${bodyEntry.waistline}cm`);
+  if (entry.waistline) {
+    parts.push(`腰围 ${entry.waistline}cm`);
   }
   return parts.join(" / ") || "暂无身体数据";
 };
@@ -53,7 +51,8 @@ Page({
       { label: "全部", value: "all" }
     ],
     activeFilter: "7d",
-    listPreview: []
+    fitnessList: [],
+    bodyList: []
   },
   onShow() {
     this.loadEntries();
@@ -61,39 +60,42 @@ Page({
   loadEntries() {
     const fitnessEntries = getEntries(FITNESS_KEY);
     const bodyEntries = getEntries(BODY_KEY);
-    const grouped = new Map();
-
-    fitnessEntries.forEach((entry) => {
-      if (!filterByRange(entry.date, this.data.activeFilter)) return;
-      if (!grouped.has(entry.date)) grouped.set(entry.date, {});
-      grouped.get(entry.date).fitness = entry;
-    });
-
-    bodyEntries.forEach((entry) => {
-      if (!filterByRange(entry.date, this.data.activeFilter)) return;
-      if (!grouped.has(entry.date)) grouped.set(entry.date, {});
-      grouped.get(entry.date).body = entry;
-    });
-
-    const listPreview = Array.from(grouped.entries())
-      .map(([date, data]) => ({
-        date,
-        title: date,
-        subtitle: buildSummary(data.fitness),
-        meta: buildBodyMeta(data.body)
+    const fitnessList = fitnessEntries
+      .filter((entry) => filterByRange(entry.date, this.data.activeFilter))
+      .map((entry) => ({
+        id: entry.id,
+        date: entry.date,
+        title: buildFitnessSummary(entry),
+        label: entry.date
       }))
       .sort((a, b) => (a.date > b.date ? -1 : 1));
 
-    this.setData({ listPreview });
+    const bodyList = bodyEntries
+      .filter((entry) => filterByRange(entry.date, this.data.activeFilter))
+      .map((entry) => ({
+        id: entry.id,
+        date: entry.date,
+        title: buildBodySummary(entry),
+        label: entry.date
+      }))
+      .sort((a, b) => (a.date > b.date ? -1 : 1));
+
+    this.setData({ fitnessList, bodyList });
   },
   onFilterChange(event) {
     const value = event.currentTarget.dataset.value;
     this.setData({ activeFilter: value }, () => this.loadEntries());
   },
-  goToDetail(event) {
-    const date = event.currentTarget.dataset.date;
+  goToFitnessDetail(event) {
+    const id = event.currentTarget.dataset.id;
     wx.navigateTo({
-      url: `/pages/detail/index?date=${date}`
+      url: `/pages/detail/index?kind=fitness&id=${id}`
+    });
+  },
+  goToBodyDetail(event) {
+    const id = event.currentTarget.dataset.id;
+    wx.navigateTo({
+      url: `/pages/detail/index?kind=body&id=${id}`
     });
   },
   goToLog() {

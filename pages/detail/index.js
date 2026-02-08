@@ -2,6 +2,7 @@ const {
   FITNESS_KEY,
   BODY_KEY,
   getEntries,
+  getEntryById,
   upsertEntry,
   deleteEntry
 } = require("../../utils/storage");
@@ -23,6 +24,7 @@ const findByDate = (entries, date) => {
 Page({
   data: {
     workoutTypes: workoutOptions.map((item) => item.label),
+    kind: "fitness",
     fitnessId: "",
     bodyId: "",
     form: {
@@ -39,6 +41,9 @@ Page({
   onLoad(options) {
     const date = options.date || getToday();
     this.setData({
+      kind: options.kind || "fitness",
+      fitnessId: options.kind === "fitness" ? options.id || "" : "",
+      bodyId: options.kind === "body" ? options.id || "" : "",
       "form.date": date
     });
   },
@@ -47,8 +52,12 @@ Page({
   },
   loadEntries() {
     const date = this.data.form.date;
-    const fitnessEntry = findByDate(getEntries(FITNESS_KEY), date);
-    const bodyEntry = findByDate(getEntries(BODY_KEY), date);
+    const fitnessEntry = this.data.fitnessId
+      ? getEntryById(FITNESS_KEY, this.data.fitnessId)
+      : findByDate(getEntries(FITNESS_KEY), date);
+    const bodyEntry = this.data.bodyId
+      ? getEntryById(BODY_KEY, this.data.bodyId)
+      : findByDate(getEntries(BODY_KEY), date);
     const typeIndex = Math.max(
       0,
       workoutOptions.findIndex((item) => item.value === (fitnessEntry && fitnessEntry.type))
@@ -58,7 +67,7 @@ Page({
       fitnessId: fitnessEntry ? fitnessEntry.id : "",
       bodyId: bodyEntry ? bodyEntry.id : "",
       form: {
-        date,
+        date: (fitnessEntry && fitnessEntry.date) || (bodyEntry && bodyEntry.date) || date,
         typeIndex,
         duration: fitnessEntry && fitnessEntry.duration ? String(fitnessEntry.duration) : "",
         count: fitnessEntry && fitnessEntry.count ? String(fitnessEntry.count) : "",
@@ -93,7 +102,7 @@ Page({
     });
   },
   onSaveFitness() {
-    const { form, fitnessId, bodyId } = this.data;
+    const { form, fitnessId } = this.data;
     if (!form.date) {
       wx.showToast({
         title: "请先选择日期",
@@ -156,14 +165,16 @@ Page({
     });
   },
   onDelete() {
-    const { fitnessId, bodyId } = this.data;
+    const { fitnessId, bodyId, kind } = this.data;
+    const title = kind === "body" ? "确认删除身体数据" : "确认删除健身记录";
+    const content = kind === "body" ? "删除身体数据后不可恢复，确定要删除吗？" : "删除健身记录后不可恢复，确定要删除吗？";
     wx.showModal({
-      title: "确认删除",
-      content: "删除后不可恢复，确定要删除吗？",
+      title,
+      content,
       success: (res) => {
         if (!res.confirm) return;
-        if (fitnessId) deleteEntry(FITNESS_KEY, fitnessId);
-        if (bodyId) deleteEntry(BODY_KEY, bodyId);
+        if (kind === "fitness" && fitnessId) deleteEntry(FITNESS_KEY, fitnessId);
+        if (kind === "body" && bodyId) deleteEntry(BODY_KEY, bodyId);
         wx.switchTab({
           url: "/pages/history/index"
         });

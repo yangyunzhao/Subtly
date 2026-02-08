@@ -27,6 +27,10 @@ const deleteEntry = (key, id) => {
   return entries;
 };
 
+const getEntryById = (key, id) => {
+  return getEntries(key).find((item) => item.id === id);
+};
+
 const findByDate = (key, date) => {
   return getEntries(key).filter((item) => item.date === date);
 };
@@ -38,5 +42,6 @@ module.exports = {
   setEntries,
   upsertEntry,
   deleteEntry,
+  getEntryById,
   findByDate
 };

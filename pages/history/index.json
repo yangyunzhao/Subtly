@@ -1,5 +1,5 @@
 {
-  "navigationBarTitleText": "History",
+  "navigationBarTitleText": "历史记录",
   "usingComponents": {
     "van-button": "vant-weapp/button/index",
     "van-cell": "vant-weapp/cell/index",

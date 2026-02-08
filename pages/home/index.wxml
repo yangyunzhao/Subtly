@@ -1,6 +1,6 @@
 <view class="page">
-  <text class="title">Home</text>
-  <text class="subtitle">M1 页面骨架导航</text>
+  <text class="title">首页</text>
+  <text class="subtitle">快速查看今日摘要</text>
   <view class="section">
     <text class="section-title">今日摘要（{{today}}）</text>
     <view class="card">
@@ -23,8 +23,7 @@
     </view>
   </view>
   <view class="actions">
-    <van-button type="primary" block bind:click="goToLog">进入 Log</van-button>
-    <van-button type="default" block bind:click="goToHistory">进入 History</van-button>
-    <van-button type="default" block bind:click="goToDetail">进入 Detail</van-button>
+    <van-button type="primary" block bind:click="goToLog">去记录</van-button>
+    <van-button type="default" block bind:click="goToHistory">查看历史</van-button>
   </view>
 </view>

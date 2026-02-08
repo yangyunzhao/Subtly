@@ -1,5 +1,5 @@
 <view class="page">
-  <text class="title">Detail</text>
+  <text class="title">详情</text>
   <text class="subtitle">查看 / 编辑记录</text>
 
   <view class="section">
@@ -105,7 +105,7 @@
       <van-button type="danger" block bind:click="onDelete">删除记录</van-button>
     </view>
     <view class="section">
-      <van-button type="default" block bind:click="goHome">返回 Home</van-button>
-    </view>
+    <van-button type="default" block bind:click="goHome">返回首页</van-button>
   </view>
+</view>
 </view>

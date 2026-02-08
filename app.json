@@ -9,20 +9,20 @@
     "list": [
       {
         "pagePath": "pages/home/index",
-        "text": "Home"
+        "text": "首页"
       },
       {
         "pagePath": "pages/log/index",
-        "text": "Log"
+        "text": "记录"
       },
       {
         "pagePath": "pages/history/index",
-        "text": "History"
+        "text": "历史"
       }
     ]
   },
   "window": {
-    "navigationBarTitleText": "Subtly Fitness Tracker"
+    "navigationBarTitleText": "Subtly 健身记录"
   },
   "style": "v2"
 }

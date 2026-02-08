@@ -5,6 +5,10 @@ const hasEntryForDate = (entries, date) => {
   return entries.some((entry) => entry.date === date);
 };
 
+const countEntriesForDate = (entries, date) => {
+  return entries.filter((entry) => entry.date === date).length;
+};
+
 Page({
   data: {
     today: "",
@@ -15,10 +19,12 @@ Page({
     const today = getToday();
     const fitnessEntries = getEntries(FITNESS_KEY);
     const bodyEntries = getEntries(BODY_KEY);
+    const fitnessCount = countEntriesForDate(fitnessEntries, today);
+    const bodyCount = countEntriesForDate(bodyEntries, today);
     this.setData({
       today,
-      fitnessStatus: hasEntryForDate(fitnessEntries, today) ? "已记录" : "未记录",
-      bodyStatus: hasEntryForDate(bodyEntries, today) ? "已记录" : "未记录"
+      fitnessStatus: fitnessCount ? `已记录 ${fitnessCount} 条` : "未记录",
+      bodyStatus: bodyCount ? `已记录 ${bodyCount} 条` : "未记录"
     });
   },
   goToLog() {
@@ -30,11 +36,5 @@ Page({
     wx.switchTab({
       url: "/pages/history/index"
     })
-  },
-  goToDetail() {
-    const date = this.data.today || getToday();
-    wx.navigateTo({
-      url: `/pages/detail/index?date=${date}`
-    });
   }
 })

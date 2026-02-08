@@ -17,6 +17,7 @@ const workoutOptions = [
 Page({
   data: {
     workoutTypes: workoutOptions.map((item) => item.label),
+    activeTab: 0,
     form: {
       date: "",
       typeIndex: 0,
@@ -51,6 +52,15 @@ Page({
         : event.detail;
     this.setData({
       [`form.${field}`]: value
+    });
+  },
+  onTabChange(event) {
+    const index =
+      event.detail && event.detail.index !== undefined
+        ? event.detail.index
+        : event.detail;
+    this.setData({
+      activeTab: index
     });
   },
   onSaveFitness() {
